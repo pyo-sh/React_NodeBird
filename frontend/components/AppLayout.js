@@ -1,8 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import { Menu, Input, Button, Row, Col, Card, Avatar } from 'antd';
+import { Menu, Input, Row, Col} from 'antd';
 import LoginForm from './LoginForm';
+import UserProfile from './UserProfile';
 
 const dummy = {
     nickname: '표서쿤',
@@ -22,28 +23,19 @@ const AppLayout = ({children}) => {
                     <Input.Search enterButton style={{verticalAlign:'middle'}}/>
                 </Menu.Item>
             </Menu>
-            <Link href="/signup"><a><Button>회원가입</Button></a></Link>
-            <Row>
+            <Row gutter={8}>
                 <Col xs={24} md={6}>
-                    {dummy.isLoggedIn ?
-                    <Card
-                        actions={[
-                            <div key="twit">짹짹<br/>{dummy.Post.length}</div>,
-                            <div key="following">팔로잉<br/>{dummy.Followings.length}</div>,
-                            <div key="follower">팔로워<br/>{dummy.Followers.length}</div>,
-                        ]}
-                    >
-                        <Card.Meta
-                            avatar={<Avatar>{dummy.nickname[0]}</Avatar>}
-                            title={dummy.nickname}
-                        />
-                    </Card>
+                    {dummy.isLoggedIn
+                    ? <UserProfile/>
                     : <LoginForm/> }
                 </Col>
-                <Col xs={24} md={12} />
-                <Col xs={24} md={6} />
+                <Col xs={24} md={12}>
+                    {children}
+                </Col>
+                <Col xs={24} md={6}>
+                    <Link href="https://www.zerocho.com"><a target="_blank">Course by ZeroCho</a></Link>
+                </Col>
             </Row>
-            {children}
         </div>
     );
 };

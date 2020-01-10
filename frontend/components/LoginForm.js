@@ -5,7 +5,7 @@ import {useInput} from '../pages/signup';
 
 const LoginForm = () => {
     const [id, onChangeId] = useInput('');
-    const [password, onChangePassword] = userInput('');
+    const [password, onChangePassword] = useInput('');
     const onSubmitForm = useCallback((e) => {
         e.preventDefault();
         console.log({
@@ -13,7 +13,7 @@ const LoginForm = () => {
         });
     }, [id, password]);
     return(
-        <Form onSubmit={onSubmitForm}>
+        <Form onSubmit={onSubmitForm} style={{padding:'10px'}}>
             <div>
                 <label>아이디</label>
                 <br/>
@@ -24,7 +24,7 @@ const LoginForm = () => {
                 <br/>
                 <Input name="user-password" type="password" required value={password} onChange={onChangePassword}/>
             </div>
-            <div>
+            <div style={{ marginTop: '10px' }}>
                 <Button type="primary" htmlType="submit" loading={false}>로그인</Button>
                 <Link href="/signup"><a><Button>회원가입</Button></a></Link>
             </div>

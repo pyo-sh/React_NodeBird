@@ -1,12 +1,29 @@
 import React from 'react';
-import Link from 'next/link';
+import PostForm from '../components/PostForm';
+import PostCard from '../components/PostCard';
+
+const dummy = {
+    isLoggedIn: true,
+    imagePaths: [],
+    mainPosts: [{
+        User: {
+            id: 1,
+            nickname: '표서쿤',
+        },
+        content: '첫 번째 게시글',
+    }],
+};
 
 const Home = () => {
     return(
-        <>
-            <Link href="/about"><a>about</a></Link>
-            <div>Hello, Next!</div>
-        </>
+        <div>
+            { dummy.isLoggedIn && <PostForm/>}
+            { dummy.mainPosts.map((c)=>{
+                return(
+                    <PostCard key={c} post={c}/>
+                );
+            }) }
+        </div>
     );
 }
 
