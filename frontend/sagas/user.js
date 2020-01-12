@@ -1,6 +1,5 @@
 import { all, delay, fork, put, takeEvery } from 'redux-saga/effects';
-import axios from 'axios';
-
+// import axios from 'axios';
 import {
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
@@ -12,17 +11,17 @@ import {
 
 function loginAPI() {
   // 서버에 요청을 보내는 부분
-  return axios.post('/login');
+  // return axios.post('/login');
 }
 
 function* login() {
   try {
     // yield call(loginAPI);
-    yield delay(2000);
-    yield put({ // put은 dispatch 동일
+    yield delay(2000); // 현재 로그인 구현이 안되어 있기 때문이다.
+    yield put({
       type: LOG_IN_SUCCESS,
     });
-  } catch (e) { // loginAPI 실패
+  }catch (e) {
     console.error(e);
     yield put({
       type: LOG_IN_FAILURE,
@@ -36,7 +35,7 @@ function* watchLogin() {
 
 function signUpAPI() {
   // 서버에 요청을 보내는 부분
-  return axios.post('/login');
+  // return axios.post('/login');
 }
 
 function* signUp() {
@@ -66,3 +65,4 @@ export default function* userSaga() {
     fork(watchSignUp),
   ]);
 }
+ 

@@ -1,7 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Form, Input, Checkbox, Button } from 'antd';
-import { useDispatch } from 'react-redux';
-import { signUpAction } from '../reducers/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { SIGN_UP_REQUEST } from '../reducers/user';
+import Router from 'next/router';
 
 export const useInput = (initValue = null) => {
     const [value, setter] = useState(initValue);
@@ -13,6 +14,7 @@ export const useInput = (initValue = null) => {
 
 const Signup = () => {
     const dispatch = useDispatch();
+    const { isSigningUp, me } = useSelector(state => state.user);
 
     const [id, onChangeId] = useInput('');
     const [nick, onChangeNick] = useInput('');
@@ -22,6 +24,15 @@ const Signup = () => {
     const [passwordError, setPasswordError] = useState('');;
     const [termError, setTermError] = useState(false);;
 
+    // 로그인을 했을 때 다른페이지로 이동하기 위함
+    useEffect(() => {
+        if (me) {
+          alert('로그인했으니 메인페이지로 이동합니다.');
+          // 링크 대신에 프로그래밍 적으로 페이지를 이동하는 것
+          Router.push('/');
+        }
+    }, [me && me.id]); // undefined 일 수 있으니까 guard 한다.
+
     const onSubmit = useCallback((e) => {
         e.preventDefault();
         if(password !== passwordCheck){
@@ -30,11 +41,14 @@ const Signup = () => {
         if(!term){
             return setTermError(true);
         }
-        dispatch(signUpAction({
-            id,
-            password,
-            nick,
-        }));
+        dispatch({
+            type: SIGN_UP_REQUEST,
+            data: {
+              id,
+              password,
+              nick,
+            },
+        });
     }, [password, passwordCheck, term]);
 
     const onChangePasswordCheck = useCallback((e) => {
@@ -75,7 +89,7 @@ const Signup = () => {
                 {termError && <div style={{ color: 'red' }}>약관에 동의하셔야 합니다.</div>}
             </div>
             <div style = {{ marginTop: 10 }}>
-                <Button type="primary" htmlType="submit"> 가입하기 </Button>
+                <Button type="primary" htmlType="submit" loading={isSigningUp}> 가입하기 </Button>
             </div>
         </Form>
     </>
